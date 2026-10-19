@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {createPuzzle,countSolutions,newGame,move} from './logic.js';
+test('puzzle has a unique solution',()=>{for(const difficulty of ['easy','normal','hard']){const p=createPuzzle(77,difficulty);assert.equal(countSolutions(p.puzzle),1);assert.equal(p.solution.length,81)}});
+test('speed correct moves and invalid rejection',()=>{const g=newGame({players:['a','b']});const i=g.puzzle.findIndex(x=>!x);assert.equal(move(g,'a',i,g.solution[i]).correct,true);assert.equal(g.boards.a[i],g.solution[i]);assert.throws(()=>move(g,'a',i,0))});
+test('territory enforces turn',()=>{const g=newGame({mode:'territory',players:['a','b']});const i=g.puzzle.findIndex(x=>!x);move(g,'a',i,g.solution[i]);assert.throws(()=>move(g,'a',i+1,1));assert.equal(g.scores.a,10)});
